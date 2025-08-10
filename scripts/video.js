@@ -32,6 +32,16 @@ const cardDemo = {
     "details": "Wednesday, August 24, 2022 | Tag Cloud Tags: Biden, EU, Euro, Europe, Joe Biden, Military, News, Russia, Security, UK, Ukraine, United States, Worthy News (Worthy News) – U.S. President Joe Biden has announced nearly $3 billion in new U.S. military aid for Kyiv as Ukraine marked its independence day six months after Russia invaded the country.'The United States of America is committed to supporting the people of Ukraine as they continue the fight to defend their sovereignty. As part of that commitment, I am proud to announce our biggest tranche of security assistance to date: approximately $2."
 };
 
+// creating a function for showing specific category_id
+const loadCategoryNews= (id) =>{
+  // alert(id);
+  // fetch
+  fetch(`https://openapi.programming-hero.com/api/news/category/${id}`)
+    .then((res)=> res.json())
+    .then((data) => displayNews(data))
+    .catch((error) => console.log(error));
+}
+
 // async function
 const loadCategories = async () => {
   const response = await fetch(
@@ -51,6 +61,7 @@ const loadNews = async () => {
 // create DisplayNews
 const displayNews = (news) => {
   const newsContainer = document.getElementById("News");
+  newsContainer.innerHTML="";
   news.forEach((report) => {
     console.log(report);
     const card = document.createElement("div");
@@ -104,13 +115,18 @@ const displayCategories = (categories) => {
   // To Have each elements of the array user forEach
   categories.forEach((item) => {
     // create an anchor tag
-    const anchor = document.createElement("a");
-    anchor.classList.add("text-dark", "font-bold", "px-4");
-
-    anchor.innerText = item.category_name;
-
-    //  add
-    categoryContainer.append(anchor);
+    // const anchor = document.createElement("a");
+    // anchor.classList.add("text-dark", "font-bold", "px-4",);
+    // anchor.innerText = item.category_name;
+    const anchorContainer = document.createElement("div");
+    anchorContainer.innerHTML = `
+    <a  onclick="loadCategoryNews(${item.category_id})" class="a px-4" href="">
+    ${item.category_name}
+    </a>
+    `
+    
+    //  add anchor to category container 
+    categoryContainer.append(anchorContainer);
   });
 };
 
